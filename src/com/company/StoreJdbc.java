@@ -44,7 +44,7 @@ public class StoreJdbc {
 
     static boolean insert(User user) {
         Connection connection = getConn();
-        String sql = "insert into wuziqi(id, password, worktype) values(?, ?, ?)";
+        String sql = "insert into user(id, password, worktype) values(?, ?, ?)";
         PreparedStatement preparedStatement;//预编译
         try {
             preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
@@ -94,10 +94,13 @@ public class StoreJdbc {
         Connection connection = getConn();
 //		上面是错误的方法，正确的方法写到了下面
 //		String sql = "select * from wuziqi where name=" + user.getName() + " and password="+user.getPassword() ;
-        String sql = "select * from wuziqi where id= '"+ user.getId() +"'  and password= '"+user.getPassword()+"'" ;
+        String sql = "select * from user where id= '"+ user.getId() +"'  and password= '"+user.getPassword()+"';" ;
         PreparedStatement preparedStatement;
+        System.out.println("id:"+user.getId()+" password:"+user.getPassword());
+        System.out.println(sql);
 
         try {
+            System.out.println(sql);
             preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
             System.out.println(sql);
             ResultSet resultSet = preparedStatement.executeQuery();

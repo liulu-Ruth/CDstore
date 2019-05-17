@@ -5,12 +5,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Main extends JFrame {
 
     private JPanel contentPane;
     Main mainTHIS;
-    public static User user = new User();
+    public static User user;
 
     public static void main(String[] args) {
         // write your code here
@@ -107,6 +109,11 @@ public class Main extends JFrame {
         idField.setForeground(Color.GRAY);
         idField.setFont(hintFont);
         idField.setText("请输入账号");
+        idField.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent e){
+                idField.setText("");
+            }
+        });
         idField.setBounds(50, 90, 200, 30);
         idField.setBackground(txColor);
         panel1.add(idField);
@@ -116,6 +123,10 @@ public class Main extends JFrame {
         passwordField.setForeground(Color.GRAY);
         passwordField.setFont(hintFont);
         passwordField.setText("请输入密码");
+        passwordField.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                passwordField.setText("");}
+        });
         passwordField.setBounds(50, 140, 200, 30);
         passwordField.setBackground(txColor);
         panel1.add(passwordField);
@@ -132,6 +143,7 @@ public class Main extends JFrame {
                 login.setVisible(true);*/
                 String id = idField.getText();
                 String password = passwordField.getText();
+                System.out.println("id:"+id+" password:"+password);
                 if(id.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "请输入用户名");
                 }
@@ -141,13 +153,17 @@ public class Main extends JFrame {
 
                 // 这里jdbc编程验证用户
 
-                User user = new User( id, password, "");
+                user = new User( id, password, "");
+                System.out.println("id:"+user.getId()+" password:"+user.getPassword());
 
                 if (StoreJdbc.select(user)) {
-                    if (user.getWorktype() == "cashier ") {
+                    System.out.println(user.getWorktype());
+                    if (user.getWorktype().equals("cashier")) {
+                        System.out.println(user.getWorktype());
                         Cashier cashier = new Cashier();
                         cashier.setVisible(true);
-                    }else if(user.getWorktype()=="buyer"){
+                    }else if(user.getWorktype().equals("buyer")){
+                        System.out.println(user.getWorktype());
                         Buyer buyer=new Buyer();
                         buyer.setVisible(true);
                     }

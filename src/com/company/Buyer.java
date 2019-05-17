@@ -33,16 +33,11 @@ public class Buyer extends JFrame {
                 screenSize.height - screenInsets.top - screenInsets.bottom);
         //setBounds(100 + 400, 100 + 10, 308, 500);
         setBounds(frameBounds);
-        setTitle("CDstore");
+        setTitle("Buyer");
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
-        System.out.println("this.width:"+this.getWidth()+"   this.height:"+this.getHeight()+"   screenSize.width:"+screenSize.width
-                +"   screenSize.height:"+screenSize.height);
-        System.out.println("screenInsets.left:"+screenInsets.left+"   screenInsets.top:"+screenInsets.top);
-        System.out.println("screenSize.width - screenInsets.left - screenInsets.right:"+(screenSize.width - screenInsets.left - screenInsets.right));
-        System.out.println("screenSize.height - screenInsets.top - screenInsets.bottom:"+(screenSize.height - screenInsets.top - screenInsets.bottom));
 
         JPanel panel = new JPanel() {
             public void paintComponent(Graphics g) {
