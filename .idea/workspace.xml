@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0013af07-835b-4d04-b0e7-63ed9fc4d01e" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/out/production/大作业/com/company/pho/dywyzrxqx.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/out/production/大作业/com/company/pho/greenleaf.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/out/production/大作业/com/company/pho/greenlotus.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/out/production/大作业/com/company/pho/qxdyjj.jpg" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -290,7 +285,7 @@
       <workItem from="1558075171269" duration="3017000" />
       <workItem from="1558078272478" duration="5377000" />
       <workItem from="1558095324246" duration="524000" />
-      <workItem from="1558096304454" duration="54000" />
+      <workItem from="1558096304454" duration="273000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1558084180361</created>
@@ -299,11 +294,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558084180361</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="first commit">
+      <created>1558096370345</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1558096370345</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27361000" />
+    <option name="totallyTimeSpent" value="27580000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
