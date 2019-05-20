@@ -52,6 +52,40 @@ public class Cashier extends JFrame {
         panel.setBounds(0, 0, this.getWidth(), this.getHeight());
         contentPane.add(panel);
         panel.setLayout(null);
+
+        Color btnColor = new Color(153, 183, 111);
+        Font btnFont=new Font("幼圆",Font.BOLD,15);
+        JButton leaseButton = new JButton("出租");
+        leaseButton.setBounds(this.getWidth()/2-100, this.getHeight()/2-100, 200, 30);
+        leaseButton.setBackground(btnColor);
+        leaseButton.setFont(btnFont);
+        panel.add(leaseButton);
+
+        JButton saleButton = new JButton("销售");
+        saleButton.setBounds(this.getWidth()/2-100, this.getHeight()/2-50, 200, 30);
+        saleButton.setBackground(btnColor);
+        saleButton.setFont(btnFont);
+        panel.add(saleButton);
+
+        JButton queryButton = new JButton("查询租赁信息");
+        queryButton.setBounds(this.getWidth()/2-100, this.getHeight()/2, 200, 30);
+        queryButton.setBackground(btnColor);
+        queryButton.setFont(btnFont);
+        panel.add(queryButton);
+
+        JButton returnButton = new JButton("归还");
+        returnButton.setBounds(this.getWidth()/2-100, this.getHeight()/2+50, 200, 30);
+        returnButton.setBackground(btnColor);
+        returnButton.setFont(btnFont);
+        panel.add(returnButton);
+
+        JButton registerButton = new JButton("注册会员");
+        registerButton.setBounds(this.getWidth()/2-100, this.getHeight()/2+100, 200, 30);
+        registerButton.setBackground(btnColor);
+        registerButton.setFont(btnFont);
+        panel.add(registerButton);
+
+
     }
 
 }

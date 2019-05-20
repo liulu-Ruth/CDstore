@@ -104,6 +104,7 @@ public class Main extends JFrame {
         JTextField idField;
         JTextField passwordField;
 
+
         Color txColor = new Color(207,218,210);
         idField = new JTextField();
         idField.setForeground(Color.GRAY);
@@ -111,7 +112,8 @@ public class Main extends JFrame {
         idField.setText("请输入账号");
         idField.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
-                idField.setText("");
+                if(idField.getText().equals("请输入账号"))
+                    idField.setText("");
             }
         });
         idField.setBounds(50, 90, 200, 30);
@@ -125,7 +127,8 @@ public class Main extends JFrame {
         passwordField.setText("请输入密码");
         passwordField.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                passwordField.setText("");}
+                if(passwordField.getText().equals("请输入密码"))
+                    passwordField.setText("");}
         });
         passwordField.setBounds(50, 140, 200, 30);
         passwordField.setBackground(txColor);
