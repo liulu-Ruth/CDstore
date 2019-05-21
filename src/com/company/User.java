@@ -5,6 +5,7 @@ public class User {
 	private String id = "";
 	private String password = "";
 	private String worktype = "";
+	private String name="";
 
 	private String enemy = "";
 	public String getEnemy() {
@@ -16,10 +17,11 @@ public class User {
 	public User() {
 		
 	}
-	public User(String id, String password, String worktype) {
+	public User(String id, String password, String worktype,String name) {
 		this.id = id;
 		this.password = password;
 		this.worktype = worktype;
+		this.name=name;
 
 	}
 
@@ -30,6 +32,10 @@ public class User {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	public String getName(){return name;}
+
+	public void setName(String name){this.name=name;}
 
 	public String getPassword() {
 		return password;

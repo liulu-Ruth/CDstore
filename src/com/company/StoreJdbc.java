@@ -44,7 +44,7 @@ public class StoreJdbc {
 
     static boolean insert(User user) {
         Connection connection = getConn();
-        String sql = "insert into user(id, password, worktype) values(?, ?, ?)";
+        String sql = "insert into user(id, password, worktype,name) values(?, ?, ?, ?)";
         PreparedStatement preparedStatement;//预编译
         try {
             preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
@@ -52,6 +52,7 @@ public class StoreJdbc {
             preparedStatement.setString(1, user.getId());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getWorktype());
+            preparedStatement.setString(4, user.getName());
 
             // 重要的一步
             int a = preparedStatement.executeUpdate();
@@ -110,10 +111,10 @@ public class StoreJdbc {
                 System.out.println("=========" + resultSet.getString(1) + "===========" + resultSet.getString(3) );
 
                 user.setWorktype(resultSet.getString(3));
-
+                user.setName(resultSet.getString(4));
 
                 Main.user.setWorktype(resultSet.getString(3));
-                Main.user.setId(resultSet.getString(1));
+                Main.user.setName(resultSet.getString(4));
                 preparedStatement.close();
                 connection.close();
 
@@ -142,7 +143,7 @@ public class StoreJdbc {
 //		// 执行成功
 //		System.out.println(select(user));
 
-        User user2 = new User("a","a","a");
+        User user2 = new User("a","a","a","a");
 //		System.out.println(insert(user2));
 //		user2.setFail(1);
 //		System.out.println(update(user2));

@@ -53,6 +53,15 @@ public class Cashier extends JFrame {
         contentPane.add(panel);
         panel.setLayout(null);
 
+
+        Color labColor = new Color(153, 183, 111);
+        Font labFont=new Font("幼圆",Font.BOLD,15);
+        JLabel idLabel = new JLabel( Main.user.getName()+"你好，欢迎登录");
+        idLabel.setFont(labFont);
+        idLabel.setBounds(this.getWidth()/2+400, 0, 300, 30);
+        idLabel.setBackground(labColor);
+        panel.add(idLabel);
+
         Color btnColor = new Color(153, 183, 111);
         Font btnFont=new Font("幼圆",Font.BOLD,15);
         JButton leaseButton = new JButton("出租");

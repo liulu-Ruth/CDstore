@@ -137,7 +137,7 @@ public class Main extends JFrame {
 
 
         Color btnColor = new Color(153, 183, 111);
-        JButton btnNewButton = new JButton("登陆");
+        JButton btnNewButton = new JButton("登录");
         btnNewButton.setFont(myFont);
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -156,7 +156,7 @@ public class Main extends JFrame {
 
                 // 这里jdbc编程验证用户
 
-                user = new User( id, password, "");
+                user = new User( id, password, "","");
                 System.out.println("id:"+user.getId()+" password:"+user.getPassword());
 
                 if (StoreJdbc.select(user)) {

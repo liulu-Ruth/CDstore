@@ -1124,7 +1124,12 @@
       <DataType>varchar(10)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="282" parent="278" name="PRIMARY">
+    <column id="282" parent="278" name="name">
+      <Position>4</Position>
+      <DataType>varchar(10)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="283" parent="278" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

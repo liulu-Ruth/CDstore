@@ -52,5 +52,35 @@ public class Buyer extends JFrame {
         panel.setBounds(0, 0, this.getWidth(), this.getHeight());
         contentPane.add(panel);
         panel.setLayout(null);
+
+        Color labColor = new Color(153, 183, 111);
+        Font labFont=new Font("幼圆",Font.BOLD,15);
+        JLabel idLabel = new JLabel( Main.user.getName()+"你好，欢迎登录");
+        idLabel.setFont(labFont);
+        idLabel.setBounds(this.getWidth()/2+400, 0, 300, 30);
+        idLabel.setBackground(labColor);
+        panel.add(idLabel);
+
+        Color btnColor = new Color(153, 183, 111);
+        Font btnFont=new Font("幼圆",Font.BOLD,15);
+
+        JButton saleButton = new JButton("租赁商品");
+        saleButton.setBounds(this.getWidth()/2-100, this.getHeight()/2-50, 200, 30);
+        saleButton.setBackground(btnColor);
+        saleButton.setFont(btnFont);
+        panel.add(saleButton);
+
+        JButton queryButton = new JButton("销售商品");
+        queryButton.setBounds(this.getWidth()/2-100, this.getHeight()/2, 200, 30);
+        queryButton.setBackground(btnColor);
+        queryButton.setFont(btnFont);
+        panel.add(queryButton);
+
+        JButton returnButton = new JButton("库存查询");
+        returnButton.setBounds(this.getWidth()/2-100, this.getHeight()/2+50, 200, 30);
+        returnButton.setBackground(btnColor);
+        returnButton.setFont(btnFont);
+        panel.add(returnButton);
+
     }
 }
