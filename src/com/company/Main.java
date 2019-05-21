@@ -112,8 +112,10 @@ public class Main extends JFrame {
         idField.setText("请输入账号");
         idField.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
-                if(idField.getText().equals("请输入账号"))
+                if(idField.getText().equals("请输入账号")) {
                     idField.setText("");
+                    idField.setForeground(Color.BLACK);
+                }
             }
         });
         idField.setBounds(50, 90, 200, 30);
@@ -127,8 +129,11 @@ public class Main extends JFrame {
         passwordField.setText("请输入密码");
         passwordField.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if(passwordField.getText().equals("请输入密码"))
-                    passwordField.setText("");}
+                if (passwordField.getText().equals("请输入密码")) {
+                    passwordField.setText("");
+                    passwordField.setForeground(Color.BLACK);
+                }
+            }
         });
         passwordField.setBounds(50, 140, 200, 30);
         passwordField.setBackground(txColor);

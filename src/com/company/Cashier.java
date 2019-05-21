@@ -3,6 +3,8 @@ package com.company;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Cashier extends JFrame {
 
@@ -68,6 +70,13 @@ public class Cashier extends JFrame {
         leaseButton.setBounds(this.getWidth()/2-100, this.getHeight()/2-100, 200, 30);
         leaseButton.setBackground(btnColor);
         leaseButton.setFont(btnFont);
+        leaseButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                Lease lease = new Lease();
+                lease.setVisible(true);
+                THIS.dispose();
+            }
+        });
         panel.add(leaseButton);
 
         JButton saleButton = new JButton("销售");

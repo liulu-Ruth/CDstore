@@ -1104,32 +1104,124 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="278" parent="5" name="user">
+    <table id="278" parent="5" name="cdinfo">
+      <Comment>光盘信息</Comment>
       <Engine>InnoDB</Engine>
     </table>
-    <column id="279" parent="278" name="id">
+    <table id="279" parent="5" name="leaseinfo">
+      <Comment>租赁信息表</Comment>
+      <Engine>InnoDB</Engine>
+    </table>
+    <table id="280" parent="5" name="user">
+      <Engine>InnoDB</Engine>
+    </table>
+    <column id="281" parent="278" name="cdbarcode">
+      <Position>1</Position>
+      <DataType>varchar(13)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="282" parent="278" name="name">
+      <Position>2</Position>
+      <DataType>varchar(20)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="283" parent="278" name="category">
+      <Position>3</Position>
+      <DataType>varchar(6)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="284" parent="278" name="price">
+      <Position>4</Position>
+      <DataType>double(7,2)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="285" parent="278" name="stock">
+      <Position>5</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="286" parent="278" name="flag">
+      <Position>6</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="287" parent="278" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>cdbarcode</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="288" parent="279" name="leaseid">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="289" parent="279" name="cdbarcode">
+      <Position>2</Position>
+      <DataType>varchar(13)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="290" parent="279" name="name">
+      <Position>3</Position>
+      <DataType>varchar(10)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="291" parent="279" name="phone">
+      <Position>4</Position>
+      <DataType>varchar(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="292" parent="279" name="rent">
+      <Position>5</Position>
+      <DataType>double|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="293" parent="279" name="deposit">
+      <Position>6</Position>
+      <DataType>double|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="294" parent="279" name="rentaldate">
+      <Position>7</Position>
+      <DataType>datetime|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="295" parent="279" name="returndate">
+      <Position>8</Position>
+      <DataType>date|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="296" parent="279" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>leaseid</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="297" parent="280" name="id">
       <Position>1</Position>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="280" parent="278" name="password">
+    <column id="298" parent="280" name="password">
       <Position>2</Position>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="281" parent="278" name="worktype">
+    <column id="299" parent="280" name="worktype">
       <Position>3</Position>
       <DataType>varchar(10)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="282" parent="278" name="name">
+    <column id="300" parent="280" name="name">
       <Position>4</Position>
       <DataType>varchar(10)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="283" parent="278" name="PRIMARY">
+    <key id="301" parent="280" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
