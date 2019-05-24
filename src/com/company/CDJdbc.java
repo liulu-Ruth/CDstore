@@ -27,7 +27,7 @@ public class CDJdbc {
 
     static boolean insert(CDInfo cdInfo) {
         Connection connection = getConn();
-        String sql = "insert into cdinfo(cdbarcode, name, category, price, stock, flag) values(?, ?, ?, ?, ?, ?)";
+        String sql = "insert into cdinfo(cdbarcode, name, category, price, salestock, leasestock) values(?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement;//预编译
         try {
             preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
@@ -36,8 +36,8 @@ public class CDJdbc {
             preparedStatement.setString(2, cdInfo.getName());
             preparedStatement.setString(3, cdInfo.getCategory());
             preparedStatement.setDouble(4, cdInfo.getPrice());
-            preparedStatement.setInt(5,cdInfo.getStock());
-            preparedStatement.setInt(6,cdInfo.getFlag());
+            preparedStatement.setInt(5,cdInfo.getSalestock());
+            preparedStatement.setInt(6,cdInfo.getLeasestock());
 
             // 重要的一步
             int a = preparedStatement.executeUpdate();

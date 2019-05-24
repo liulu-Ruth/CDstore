@@ -29,6 +29,10 @@ public class Main extends JFrame {
     }
 
     public Main() {
+       /* Paint p=new Paint();
+        p.setVisible(true);*/
+       Lease lease=new Lease();
+       lease.setVisible(true);
         mainTHIS = this;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

@@ -5,20 +5,20 @@ public class CDInfo {
     private String name="";
     private String category="";
     private double price=0.00;
-    private int stock=0;
-    private int flag=-100;
+    private int salestock=0;
+    private int leasestock=-100;
 
     public CDInfo(){
 
     }
 
-    public CDInfo(String cdbarcode,String name,String category,double price,int stock,int flag){
+    public CDInfo(String cdbarcode,String name,String category,double price,int salestock,int leasestock){
         this.cdbarcode=cdbarcode;
         this.name=name;
         this.category=category;
         this.price=price;
-        this.stock=stock;
-        this.flag=flag;
+        this.salestock=salestock;
+        this.leasestock=leasestock;
     }
 
     public String getCdbarcode() {
@@ -53,19 +53,19 @@ public class CDInfo {
         this.price = price;
     }
 
-    public int getStock() {
-        return stock;
+    public int getSalestock() {
+        return salestock;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setSalestock(int salestock) {
+        this.salestock = salestock;
     }
 
-    public int getFlag() {
-        return flag;
+    public int getLeasestock() {
+        return leasestock;
     }
 
-    public void setFlag(int flag) {
-        this.flag = flag;
+    public void setLeasestock(int leasestock) {
+        this.leasestock = leasestock;
     }
 }

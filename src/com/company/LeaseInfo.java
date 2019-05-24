@@ -7,6 +7,7 @@ import java.util.Date;
 public class LeaseInfo {
     private int leaseid=0;
     private String cdbarcode="";
+    private int number=0;
     private String name="";
     private String phone="";
     private double rent=0.00;
@@ -16,9 +17,10 @@ public class LeaseInfo {
 
     public LeaseInfo() {
     }
-    public LeaseInfo(int leaseid,String cdbarcode,String name,String phone,double rent,double deposit,Date rentaldate,Date returndate){
+    public LeaseInfo(int leaseid,String cdbarcode,int number,String name,String phone,double rent,double deposit,Date rentaldate,Date returndate){
         this.leaseid=leaseid;
         this.cdbarcode=cdbarcode;
+        this.number=number;
         this.name=name;
         this.phone=phone;
         this.rent=rent;
@@ -41,6 +43,14 @@ public class LeaseInfo {
 
     public void setCdbarcode(String cdbarcode) {
         this.cdbarcode = cdbarcode;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getName() {
