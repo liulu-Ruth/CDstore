@@ -31,8 +31,8 @@ public class Main extends JFrame {
     public Main() {
        /* Paint p=new Paint();
         p.setVisible(true);*/
-       Lease lease=new Lease();
-       lease.setVisible(true);
+       /*Lease lease=new Lease();
+       lease.setVisible(true);*/
         mainTHIS = this;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -106,7 +106,7 @@ public class Main extends JFrame {
         panel.add(lblNewLabel_1);*/
 
         JTextField idField;
-        JTextField passwordField;
+        JPasswordField passwordField;
 
 
         Color txColor = new Color(207,218,210);
@@ -127,14 +127,16 @@ public class Main extends JFrame {
         panel1.add(idField);
         idField.setColumns(10);
 
-        passwordField = new JTextField();
+        passwordField = new JPasswordField();
         passwordField.setForeground(Color.GRAY);
         passwordField.setFont(hintFont);
+        passwordField.setEchoChar((char) 0);
         passwordField.setText("请输入密码");
         passwordField.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (passwordField.getText().equals("请输入密码")) {
                     passwordField.setText("");
+                    passwordField.setEchoChar('·');
                     passwordField.setForeground(Color.BLACK);
                 }
             }

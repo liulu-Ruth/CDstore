@@ -55,6 +55,64 @@ public class CDJdbc {
     }
 
 
+    static boolean leaseUpdata(int num,String cdbarcode){
+        Connection connection = getConn();
+        String sql="update cdinfo set leasestock=? where cdbarcode='"+cdbarcode+"';";
+        System.out.println(sql);
+        PreparedStatement preparedStatement;
+        try {
+
+            // 重要的一步
+            preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+            int stock=select_cdbarcode(cdbarcode);
+            System.out.println("stock-num:"+(stock-num));
+            System.out.println("num:"+num);
+
+            preparedStatement.setInt(1,(stock-num));
+            //preparedStatement.setString(2,cdbarcode);
+            preparedStatement.executeUpdate();
+            System.out.println(sql);
+            // 关闭
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    static int select_cdbarcode(String cdbarcode) {
+
+        Connection connection = getConn();
+        String sql = "select * from cdinfo where cdbarcode= '"+ cdbarcode +"';" ;
+        PreparedStatement preparedStatement;
+        System.out.println(sql);
+        int stock=0;
+
+        try {
+            preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int col = resultSet.getMetaData().getColumnCount();
+            System.out.println(col);
+            if (resultSet.next()) {
+                stock=resultSet.getInt(6);
+                System.out.println("stock=resultSet.getInt(6):"+stock);
+                preparedStatement.close();
+                connection.close();
+                return stock;
+            }
+            else {
+                preparedStatement.close();
+                connection.close();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return stock;
+    }
     /*
      * 这里只返回查询成功与否就可以，顺便改变一下user的win和fail
      * */
@@ -83,6 +141,9 @@ public class CDJdbc {
                 Lease.cdInfo.setName(resultSet.getString(2));
                 Lease.cdInfo.setCategory(resultSet.getString(3));
                 Lease.cdInfo.setPrice(resultSet.getDouble(4));
+                Lease.cdInfo.setSalestock(resultSet.getInt(5));
+                Lease.cdInfo.setLeasestock(resultSet.getInt(6));
+
                 preparedStatement.close();
                 connection.close();
 

@@ -1,6 +1,7 @@
 package com.company;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 public class LeaseJdbc {
     static Connection getConn() {
@@ -31,14 +32,17 @@ public class LeaseJdbc {
         try {
             preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
 
-            preparedStatement.setString(2, leaseInfo.getCdbarcode());
-            preparedStatement.setInt(3, leaseInfo.getNumber());
-            preparedStatement.setString(4, leaseInfo.getName());
-            preparedStatement.setString(5,leaseInfo.getPhone());
-            preparedStatement.setDouble(6,leaseInfo.getRent());
-            preparedStatement.setDouble(7,leaseInfo.getDeposit());
-            preparedStatement.setDate(8, (Date) leaseInfo.getRentaldate());
-            preparedStatement.setDate(9,(Date)leaseInfo.getReturndate());
+            preparedStatement.setString(1, leaseInfo.getCdbarcode());
+            preparedStatement.setInt(2, leaseInfo.getNumber());
+            preparedStatement.setString(3, leaseInfo.getName());
+            preparedStatement.setString(4,leaseInfo.getPhone());
+            preparedStatement.setDouble(5,leaseInfo.getRent());
+            preparedStatement.setDouble(6,leaseInfo.getDeposit());
+            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sd1 = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println("LeaseJdbc Date.valueOf(sd.format(leaseInfo.getRentaldate())):"+sd.format(leaseInfo.getRentaldate()));
+            preparedStatement.setTimestamp(7, Timestamp.valueOf(sd.format(leaseInfo.getRentaldate())));
+            preparedStatement.setDate(8, Date.valueOf(sd1.format(leaseInfo.getReturndate())));
 
             // 重要的一步
             int a = preparedStatement.executeUpdate();

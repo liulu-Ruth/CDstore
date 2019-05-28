@@ -6,13 +6,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.util.Date;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Vector;
+
 
 public class Lease extends JFrame {
     private JPanel contentPane;
@@ -24,7 +24,7 @@ public class Lease extends JFrame {
     public static double change = 0.00;
     public static double totalPrice = 0.00;
     public static double deposit = 0.00;
-    public static int settlementFlag = 0;
+    public static boolean settlementFlag = true;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -50,7 +50,7 @@ public class Lease extends JFrame {
                 screenSize.height - screenInsets.top - screenInsets.bottom);
         //setBounds(100 + 400, 100 + 10, 308, 500);
         setBounds(frameBounds);
-        setTitle("Cashier");
+        setTitle("Lease");
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -91,9 +91,15 @@ public class Lease extends JFrame {
 
         JLabel cdLabel = new JLabel("条码");
         cdLabel.setFont(labFont);
-        cdLabel.setBounds(200, this.getHeight() - 100, 50, 30);
+        cdLabel.setBounds(200, this.getHeight() - 150, 50, 30);
         cdLabel.setBackground(labColor);
         panel.add(cdLabel);
+
+        JLabel cashLabel = new JLabel("现金");
+        cashLabel.setFont(labFont);
+        cashLabel.setBounds(200, this.getHeight() - 100, 50, 30);
+        cashLabel.setBackground(labColor);
+        panel.add(cashLabel);
 
         Color txColor = new Color(207, 218, 210);
         JTextField nameField;
@@ -113,80 +119,26 @@ public class Lease extends JFrame {
         phoneField.setColumns(11);
 
 
-        /*JTextField cashField;
-        cashField = new JTextField();
-        cashField.setForeground(Color.BLACK);
-        cashField.setBounds(this.getWidth() - 300, this.getHeight() - 200, 200, 30);
-        cashField.setBackground(txColor);
-        panel.add(cashField);
-        cashField.setColumns(11);
-        cashField.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-                    //height=2;
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });*/
-
-        /*if(height==2){
-            change=Double.parseDouble(cashField.getText())-totalPrice;
-            JLabel cashLabelnum = new JLabel(cashField.getText());
-            cashLabelnum.setFont(labFont);
-            cashLabelnum.setBounds(250, height, 50, 30);
-            cashLabelnum.setBackground(labColor);
-            panel.add(cashLabelnum);
-            JLabel changeLabelnum = new JLabel(String.valueOf(change));
-            changeLabelnum.setFont(labFont);
-            changeLabelnum.setBounds(550, height, 50, 30);
-            changeLabelnum.setBackground(labColor);
-            panel.add(changeLabelnum);
-            JLabel depositLabelnum = new JLabel(String.valueOf(deposit));
-            depositLabelnum.setFont(labFont);
-            depositLabelnum.setBounds(400, height, 50, 30);
-            depositLabelnum.setBackground(labColor);
-            panel.add(depositLabelnum);
-            System.out.println(cashField.getText());
-            System.out.println(String.valueOf(change));
-            System.out.println(String.valueOf(deposit));
-
-        }*/
-
-        /*JLabel cashLabel = new JLabel("现金");
-        cashLabel.setFont(labFont);
-        cashLabel.setBounds(200, this.getHeight() - 200, 50, 30);
-        cashLabel.setBackground(labColor);
-        panel.add(cashLabel);
-
-        JLabel depositLabel = new JLabel("押金");
-        depositLabel.setFont(labFont);
-        depositLabel.setBounds(350, this.getHeight() - 200, 50, 30);
-        depositLabel.setBackground(labColor);
-        panel.add(depositLabel);
-
-        JLabel changeLabel = new JLabel("找零");
-        changeLabel.setFont(labFont);
-        changeLabel.setBounds(500, this.getHeight() - 200, 50, 30);
-        changeLabel.setBackground(labColor);
-        panel.add(changeLabel);*/
 
         JTextField cdField;
         cdField = new JTextField();
         cdField.setForeground(Color.BLACK);
-        cdField.setBounds(250, this.getHeight() - 100, 200, 30);
+        cdField.setBounds(250, this.getHeight() - 150, 200, 30);
         cdField.setBackground(txColor);
         panel.add(cdField);
         cdField.setColumns(13);
+
+        JTextField cashField;
+        cashField = new JTextField();
+        cashField.setForeground(Color.BLACK);
+        cashField.setBounds(250, this.getHeight() - 100, 200, 30);
+        cashField.setBackground(txColor);
+        panel.add(cashField);
+        cashField.setColumns(13);
+
+
+        /*存入LeaseInfo*/
+        Vector<LeaseInfo> leaseInfos = new Vector<>();
 
         /*顾客租的商品JTable*/
         Vector<Vector<String>> dataVector = new Vector<Vector<String>>();
@@ -237,10 +189,7 @@ public class Lease extends JFrame {
         //String[] seColoumNames={"金额","押金","合计","现金","找零"};
         DefaultTableModel tableModel1 = new DefaultTableModel(sVector, seColoumNames) {
             public boolean isCellEditable(int row, int col) {
-                if (col != 3)
                     return false;
-                else
-                    return true;
             }
         };
         JTable table1 = new JTable(tableModel1);
@@ -251,6 +200,21 @@ public class Lease extends JFrame {
 
         Color btnColor = new Color(153, 183, 111);
         Font btnFont = new Font("幼圆", Font.BOLD, 15);
+
+        JButton backButton = new JButton("返回");
+        backButton.setFont(btnFont);
+        backButton.setBackground(btnColor);
+        backButton.setBounds(20,20,200,30);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Cashier cashier = new Cashier();
+                cashier.setVisible(true);
+                THIS.dispose();
+            }
+        });
+        panel.add(backButton);
+
         JButton confirmButton = new JButton("确定");
         confirmButton.setFont(btnFont);
         confirmButton.setBackground(btnColor);
@@ -275,7 +239,7 @@ public class Lease extends JFrame {
         JButton addButton = new JButton("添加");
         addButton.setFont(btnFont);
         addButton.setBackground(btnColor);
-        addButton.setBounds(600, this.getHeight() - 100, 200, 30);
+        addButton.setBounds(600, this.getHeight() - 150, 200, 30);
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -292,16 +256,26 @@ public class Lease extends JFrame {
                         int i;
                         for (i = 0; i < table.getRowCount(); i++) {
                             if (table.getValueAt(i, 0).equals(cdInfo.getCdbarcode())) {
-                                table.setValueAt((Integer.parseInt(table.getValueAt(i, 2).toString()) + 1) + "", i, 2);
-                                break;
+                                if (cdInfo.getLeasestock()>Integer.parseInt(table.getValueAt(i, 2).toString()) + 1) {
+                                    table.setValueAt((Integer.parseInt(table.getValueAt(i, 2).toString()) + 1) + "", i, 2);
+                                    break;
+                                }else {
+                                    JOptionPane.showMessageDialog(null,"库存不足！");
+                                }
                             }
                         }
                         System.out.println("i:" + i + " table.getRowCount():" + table.getRowCount());
                         if (i == table.getRowCount()) {
-                            DecimalFormat df = new DecimalFormat(".00");
-                            //String[] addData = {cdInfo.getCdbarcode(), cdInfo.getName(), 1+"" ,String.valueOf(cdInfo.getPrice()*0.8),String.valueOf(cdInfo.getPrice())};//获取文本框中的内容
-                            String[] addData = {cdInfo.getCdbarcode(), cdInfo.getName(), 1 + "", String.valueOf(df.format(cdInfo.getPrice() / 10))};//获取文本框中的内容
-                            tableModel.addRow(addData);//将文本框中的内容添加到表格模型中的末尾一行
+                            if (cdInfo.getLeasestock()>1) {
+                                //cdInfo.getLeasestock()>Integer.parseInt(table.getValueAt(i, 2).toString()) + 1
+                                DecimalFormat df = new DecimalFormat(".00");
+                                //String[] addData = {cdInfo.getCdbarcode(), cdInfo.getName(), 1+"" ,String.valueOf(cdInfo.getPrice()*0.8),String.valueOf(cdInfo.getPrice())};//获取文本框中的内容
+                                String[] addData = {cdInfo.getCdbarcode(), cdInfo.getName(), 1 + "", String.valueOf(df.format(cdInfo.getPrice() / 10))};//获取文本框中的内容
+                                tableModel.addRow(addData);//将文本框中的内容添加到表格模型中的末尾一行
+                            }
+                            else {
+                                JOptionPane.showMessageDialog(null,"库存不足！");
+                            }
                         }
                         //int[] num = new int[50];
                         //int row = table.getRowCount() + 1;//获取表格的行数
@@ -312,72 +286,121 @@ public class Lease extends JFrame {
             }
         });
         panel.add(addButton);
+
+        JButton completeButton = new JButton("完成");
+        completeButton.setFont(btnFont);
+        completeButton.setBackground(btnColor);
+        completeButton.setBounds(this.getWidth() - 300, this.getHeight() - 100, 200, 30);
+        completeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i=0;i<leaseInfos.size();i++){
+                    LeaseJdbc.insert(leaseInfos.get(i));
+                    CDJdbc.leaseUpdata(leaseInfos.get(i).getNumber(),leaseInfos.get(i).getCdbarcode());
+                }
+                change = 0.00;
+                totalPrice = 0.00;
+                deposit = 0.00;
+                settlementFlag=true;
+                dataVector.clear();
+                sVector.clear();
+                Lease lease=new Lease();
+                lease.setVisible(true);
+                THIS.dispose();
+            }
+        });
+        panel.add(completeButton);
+
+        JButton changeButton = new JButton("找零");
+        changeButton.setFont(btnFont);
+        changeButton.setBackground(btnColor);
+        changeButton.setBounds(600, this.getHeight() - 100, 200, 30);
+        changeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                table1.setValueAt(cashField.getText(), 0, 3);
+                System.out.println(table1.getValueAt(0, 3));
+                System.out.println(table1.getValueAt(0, 3).toString());
+                System.out.println(Double.valueOf(table1.getValueAt(0, 3).toString()));
+                change = Double.valueOf(cashField.getText()) - totalPrice;
+                System.out.println(change);
+                table1.setValueAt(String.valueOf(change), 0, 4);
+            }
+        });
+        panel.add(changeButton);
+
         JButton settlementButton = new JButton("结算");
         settlementButton.setFont(btnFont);
         settlementButton.setBackground(btnColor);
-        settlementButton.setBounds(this.getWidth() - 300, this.getHeight() - 100, 200, 30);
+        settlementButton.setBounds(this.getWidth() - 300, this.getHeight() - 150, 200, 30);
         settlementButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (name.isEmpty() || phone.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "请填写客户信息");
-                } else if (settlementFlag != 0) {
+                } else if (settlementFlag == false) {
                     JOptionPane.showMessageDialog(null, "您已结算");
 
-                } else if (settlementFlag == 0) {
+                } else if (settlementFlag == true) {
                     int isSettle = JOptionPane.showConfirmDialog(null, "是否确认结算？", "提示", JOptionPane.YES_NO_OPTION);
                     if (isSettle == JOptionPane.YES_OPTION) {
-                        settlementFlag = 1;
+                        settlementFlag = false;
                         int total = 0;
                         for (int i = 0; i < table.getRowCount(); i++) {
                             total += Integer.parseInt(table.getValueAt(i, 2).toString());
-                            //SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-                            //sd.format(new Date());
+                            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                            Date nd=new Date();
+                            sd.format(nd);
+                            try {
+                                nd=sd.parse(sd.format(new Date()));
+                                System.out.println("zhe shi nd :"+nd);
+                            } catch (ParseException e1) {
+                                e1.printStackTrace();
+                            }
+
+                            System.out.println("zhe shi nd :"+nd);
+                            System.out.println(sd.format(nd));
+
                             SimpleDateFormat rd = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
                             Calendar c = Calendar.getInstance();
                             c.add(Calendar.DAY_OF_MONTH, 10);
-                            Date rdate = c.getTime();
-                            Vector<LeaseInfo> leaseInfos = new Vector<>();
+                            Date rdate = (Date) c.getTime();
+                            System.out.println(nd);
+                            System.out.println(rdate);
+                            System.out.println("Double.parseDouble(table.getValueAt(i, 3).toString()):"+Double.parseDouble(table.getValueAt(i, 3).toString()));
+                            System.out.println("Double.parseDouble(table.getValueAt(i, 2).toString():"+Double.parseDouble(table.getValueAt(i, 2).toString()));
                             totalPrice += Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString());
                             if (i == table.getRowCount() - 1) {
-                                //leaseInfos.add(0,table.getValueAt(i,0).toString(),Integer.parseInt(table.getValueAt(i,2).toString()),name,phone,Integer.parseInt(table.getValueAt(i,3).toString())*Integer.parseInt(table.getValueAt(i,2).toString()),(total+4)/5*50,new Date(),rdate);
                                 System.out.println(table.getValueAt(i, 0).toString());
-                                System.out.println(Integer.parseInt(table.getValueAt(i, 2).toString()));
-                                System.out.println(name);
-                                System.out.println(phone);
-                                System.out.println(table.getValueAt(i, 3).toString());
-                                System.out.println(table.getValueAt(i, 2).toString());
-                                System.out.println(Double.parseDouble(table.getValueAt(i, 3).toString()));
-                                System.out.println(Double.parseDouble(table.getValueAt(i, 2).toString()));
-                                System.out.println(Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString()));
-                                System.out.println(String.valueOf(Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString())));
-                                //System.out.println(Integer.parseInt(table.getValueAt(i,3).toString())*Integer.parseInt(table.getValueAt(i,2).toString()));
-                                System.out.println((total + 4) / 5 * 50);
-                                System.out.println(new Date());
-                                System.out.println(rdate);
-                                leaseInfo = new LeaseInfo(0, table.getValueAt(i, 0).toString(), Integer.parseInt(table.getValueAt(i, 2).toString()), name, phone, Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString()), (total + 4) / 5 * 50, new Date(), rdate);
+                                leaseInfo = new LeaseInfo(0, table.getValueAt(i, 0).toString(), Integer.parseInt(table.getValueAt(i, 2).toString()), name, phone, Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString()), (total + 4) / 5 * 50, nd, rdate);
                                 leaseInfos.add(leaseInfo);
                             } else {
-                                leaseInfo = new LeaseInfo(0, table.getValueAt(i, 0).toString(), Integer.parseInt(table.getValueAt(i, 2).toString()), name, phone, Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString()), 0, new Date(), rdate);
+                                leaseInfo = new LeaseInfo(0, table.getValueAt(i, 0).toString(), Integer.parseInt(table.getValueAt(i, 2).toString()), name, phone, Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString()), 0, nd, rdate);
                                 leaseInfos.add(leaseInfo);
                             }
                         }
                         deposit = (total + 4) / 5 * 50;
                         totalPrice += deposit;
-                        String[] addData = {String.valueOf(totalPrice-deposit),String.valueOf(deposit) , String.valueOf(totalPrice), "",""};
+                        String[] addData = {String.format("%.2f",(totalPrice-deposit)),String.valueOf(deposit) , String.valueOf(totalPrice), "",""};
                         tableModel1.addRow(addData);//将文本框中的内容添加到表格模型中的末尾一行
 
                         //ListSelectionModel isEmpyt = table.getSelectionModel();
-                        if(table1.getValueAt(0,3).toString().isEmpty()&&!table1.getValueAt(0,1).toString().isEmpty()){
-                            System.out.println("wanle");
-                            while (table1.getValueAt(0,3).toString().isEmpty());
-                            System.out.println(table1.getValueAt(0,3));
-                            System.out.println(table1.getValueAt(0,3).toString());
-                            System.out.println(Double.valueOf(table1.getValueAt(0,3).toString()));
-                            change=Double.valueOf(table1.getValueAt(0,3).toString())-totalPrice;
-                            System.out.println(change);
-                            table1.setValueAt(String.valueOf(change),0,4);
-                        }
+                        /*if(table1.getValueAt(0,3).toString().isEmpty()){
+                            try {
+                                sleep(10000);
+                            } catch (InterruptedException e1) {
+                                e1.printStackTrace();
+                            }
+                            if(!table1.getValueAt(0,3).toString().isEmpty()) {
+                                System.out.println("wanle");
+                                System.out.println(table1.getValueAt(0, 3));
+                                System.out.println(table1.getValueAt(0, 3).toString());
+                                System.out.println(Double.valueOf(table1.getValueAt(0, 3).toString()));
+                                change = Double.valueOf(table1.getValueAt(0, 3).toString()) - totalPrice;
+                                System.out.println(change);
+                                table1.setValueAt(String.valueOf(change), 0, 4);
+                            }
+                        }*/
 
                     }
                 }

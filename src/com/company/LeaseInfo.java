@@ -4,6 +4,7 @@ import javafx.scene.chart.XYChart;
 
 import java.util.Date;
 
+
 public class LeaseInfo {
     private int leaseid=0;
     private String cdbarcode="";
