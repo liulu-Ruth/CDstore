@@ -6,6 +6,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -117,7 +119,17 @@ public class Lease extends JFrame {
         phoneField.setBackground(txColor);
         panel.add(phoneField);
         phoneField.setColumns(11);
-
+        phoneField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                int keyChar = e.getKeyChar();
+                if (keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9) {
+                } else {
+                    e.consume();
+                }
+            }
+        });
 
 
         JTextField cdField;
@@ -252,7 +264,7 @@ public class Lease extends JFrame {
                     System.out.println(cdInfo.getCdbarcode());
                     System.out.println("hi");
                     cdInfo.setCdbarcode(barcode);
-                    if (CDJdbc.select(cdInfo)) {
+                    if (CDJdbc.select(cdInfo,"lease")) {
                         int i;
                         for (i = 0; i < table.getRowCount(); i++) {
                             if (table.getValueAt(i, 0).equals(cdInfo.getCdbarcode())) {

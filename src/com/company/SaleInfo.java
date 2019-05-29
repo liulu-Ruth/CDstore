@@ -3,7 +3,7 @@ package com.company;
 import java.util.Date;
 
 public class SaleInfo {
-    private int leaseid=0;
+    private int saleid=0;
     private String cdbarcode="";
     private String name="";
     private int number=0;
@@ -11,8 +11,8 @@ public class SaleInfo {
     private double price=0.00;
     private double totalprice=0.00;
 
-    public SaleInfo(int leaseid, String cdbarcode, String name, int number, String category, double price,double totalprice){
-        this.leaseid=leaseid;
+    public SaleInfo(int saleid, String cdbarcode, String name, int number, String category, double price,double totalprice){
+        this.saleid=saleid;
         this.cdbarcode=cdbarcode;
         this.name=name;
         this.number=number;
@@ -21,12 +21,12 @@ public class SaleInfo {
         this.totalprice=totalprice;
     }
 
-    public int getLeaseid() {
-        return leaseid;
+    public int getSaleid() {
+        return saleid;
     }
 
-    public void setLeaseid(int leaseid) {
-        this.leaseid = leaseid;
+    public void setSaleid(int saleid) {
+        this.saleid = saleid;
     }
 
     public String getCdbarcode() {

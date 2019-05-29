@@ -6,6 +6,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -17,12 +19,13 @@ public class Sale extends JFrame {
     Sale THIS;
     public static SaleInfo saleInfo;
     public static CDInfo cdInfo;
-    public static String name;
+    public static String memberCode;
     public static String phone;
     public static double change = 0.00;
     public static double totalPrice = 0.00;
     public static double deposit = 0.00;
     public static boolean settlementFlag = true;
+    public static boolean isMember=false;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -36,6 +39,7 @@ public class Sale extends JFrame {
             }
         });
     }
+
     public Sale() {
         THIS = this;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,11 +78,11 @@ public class Sale extends JFrame {
 
         Color labColor = new Color(153, 183, 111);
         Font labFont = new Font("幼圆", Font.BOLD, 15);
-        JLabel nameLabel = new JLabel("姓名");
-        nameLabel.setFont(labFont);
-        nameLabel.setBounds(200, 100, 50, 30);
-        nameLabel.setBackground(labColor);
-        panel.add(nameLabel);
+        JLabel memberCodeLabel = new JLabel("会员码");
+        memberCodeLabel.setFont(labFont);
+        memberCodeLabel.setBounds(200, 100, 50, 30);
+        memberCodeLabel.setBackground(labColor);
+        panel.add(memberCodeLabel);
 
         JLabel phoneLabel = new JLabel("手机号");
         phoneLabel.setFont(labFont);
@@ -99,13 +103,24 @@ public class Sale extends JFrame {
         panel.add(cashLabel);
 
         Color txColor = new Color(207, 218, 210);
-        JTextField nameField;
-        nameField = new JTextField();
-        nameField.setForeground(Color.BLACK);
-        nameField.setBounds(250, 100, 200, 30);
-        nameField.setBackground(txColor);
-        panel.add(nameField);
-        nameField.setColumns(10);
+        JTextField memberCodeField;
+        memberCodeField = new JTextField();
+        memberCodeField.setForeground(Color.BLACK);
+        memberCodeField.setBounds(250, 100, 200, 30);
+        memberCodeField.setBackground(txColor);
+        panel.add(memberCodeField);
+        memberCodeField.setColumns(10);
+        memberCodeField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                int keyChar = e.getKeyChar();
+                if (keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9) {
+                } else {
+                    e.consume();
+                }
+            }
+        });
 
         JTextField phoneField;
         phoneField = new JTextField();
@@ -114,7 +129,17 @@ public class Sale extends JFrame {
         phoneField.setBackground(txColor);
         panel.add(phoneField);
         phoneField.setColumns(11);
-
+        phoneField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                int keyChar = e.getKeyChar();
+                if (keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9) {
+                } else {
+                    e.consume();
+                }
+            }
+        });
 
 
         JTextField cdField;
@@ -124,6 +149,17 @@ public class Sale extends JFrame {
         cdField.setBackground(txColor);
         panel.add(cdField);
         cdField.setColumns(13);
+        cdField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                int keyChar = e.getKeyChar();
+                if (keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9) {
+                } else {
+                    e.consume();
+                }
+            }
+        });
 
         JTextField cashField;
         cashField = new JTextField();
@@ -132,6 +168,20 @@ public class Sale extends JFrame {
         cashField.setBackground(txColor);
         panel.add(cashField);
         cashField.setColumns(13);
+        cashField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                int keyChar = e.getKeyChar();
+                if (keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9) {
+                } else {
+                    e.consume();
+                }
+            }
+        });
+
+        /*存入saleinfo*/
+        Vector<SaleInfo> saleInfos = new Vector<>();
 
         /*顾客租的商品JTable*/
         Vector<Vector<String>> dataVector = new Vector<Vector<String>>();
@@ -170,14 +220,14 @@ public class Sale extends JFrame {
         Vector<Vector<String>> sVector = new Vector<Vector<String>>(1);
         Vector<String> seColoumNames = new Vector<String>(1);
 
-        seColoumNames.add("金额");//名称 数量 会员价 金额
+        //seColoumNames.add("金额");//名称 数量 会员价 金额
         seColoumNames.add("合计");
         seColoumNames.add("现金");
         seColoumNames.add("找零");
         //String[] seColoumNames={"金额","押金","合计","现金","找零"};
         DefaultTableModel tableModel1 = new DefaultTableModel(sVector, seColoumNames) {
             public boolean isCellEditable(int row, int col) {
-                    return false;
+                return false;
             }
         };
         JTable table1 = new JTable(tableModel1);
@@ -188,23 +238,47 @@ public class Sale extends JFrame {
 
         Color btnColor = new Color(153, 183, 111);
         Font btnFont = new Font("幼圆", Font.BOLD, 15);
-        JButton confirmButton = new JButton("确定");
+        JButton backButton = new JButton("返回");
+        backButton.setFont(btnFont);
+        backButton.setBackground(btnColor);
+        backButton.setBounds(20, 20, 200, 30);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Cashier cashier = new Cashier();
+                cashier.setVisible(true);
+                THIS.dispose();
+            }
+        });
+        panel.add(backButton);
+
+        JButton confirmButton = new JButton("会员验证");
         confirmButton.setFont(btnFont);
         confirmButton.setBackground(btnColor);
         confirmButton.setBounds(800, 100, 200, 30);
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                name = nameField.getText();
+                memberCode = memberCodeField.getText();
                 phone = phoneField.getText();
-                if (name.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "请输入姓名");
-                } else if (phone.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "请输入手机号");
-                } else if (phone.length() != 11) {
-                    JOptionPane.showMessageDialog(null, "手机号无效");
+                if (memberCode.isEmpty() && phone.length() != 11) {
+                    JOptionPane.showMessageDialog(null, "请输入会员信息");
                 } else {
-                    JOptionPane.showMessageDialog(null, "成功");
+                    if (!memberCode.isEmpty()) {
+                        if (MemberJdbc.select(Integer.valueOf(memberCode)) == true) {
+                            isMember = true;
+                            JOptionPane.showMessageDialog(null, "验证成功");
+                        }else {
+                            JOptionPane.showMessageDialog(null, "信息有误");
+                        }
+                    }else if (!phone.isEmpty()) {
+                        if (MemberJdbc.select(phone) == true) {
+                            isMember = true;
+                            JOptionPane.showMessageDialog(null, "验证成功");
+                        }else {
+                            JOptionPane.showMessageDialog(null, "信息有误");
+                        }
+                    }
                 }
             }
         });
@@ -225,28 +299,32 @@ public class Sale extends JFrame {
                     System.out.println(cdInfo.getCdbarcode());
                     System.out.println("hi");
                     cdInfo.setCdbarcode(barcode);
-                    if (CDJdbc.select(cdInfo)) {
+                    if (CDJdbc.select(cdInfo,"sale")) {
                         int i;
                         for (i = 0; i < table.getRowCount(); i++) {
                             if (table.getValueAt(i, 0).equals(cdInfo.getCdbarcode())) {
-                                if (cdInfo.getLeasestock()>Integer.parseInt(table.getValueAt(i, 3).toString()) + 1) {
-                                    table.setValueAt((Integer.parseInt(table.getValueAt(i, 3).toString()) + 1) + "", i, 2);
+                                if (cdInfo.getSalestock() > Integer.parseInt(table.getValueAt(i, 3).toString()) + 1) {
+                                    table.setValueAt((Integer.parseInt(table.getValueAt(i, 3).toString()) + 1) + "", i, 3);
                                     break;
-                                }else {
-                                    JOptionPane.showMessageDialog(null,"库存不足！");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "库存不足！");
                                 }
                             }
                         }
                         System.out.println("i:" + i + " table.getRowCount():" + table.getRowCount());
                         if (i == table.getRowCount()) {
-                            if (cdInfo.getLeasestock()>Integer.parseInt(table.getValueAt(i, 3).toString()) + 1) {
+                            if (cdInfo.getSalestock() > 1) {
                                 DecimalFormat df = new DecimalFormat(".00");
                                 //String[] addData = {cdInfo.getCdbarcode(), cdInfo.getName(), 1+"" ,String.valueOf(cdInfo.getPrice()*0.8),String.valueOf(cdInfo.getPrice())};//获取文本框中的内容
-                                String[] addData = {cdInfo.getCdbarcode(), cdInfo.getName(), 1 + "", cdInfo.getCategory(), String.valueOf(df.format(cdInfo.getPrice() / 10))};//获取文本框中的内容
-                                tableModel.addRow(addData);//将文本框中的内容添加到表格模型中的末尾一行
-                            }
-                            else {
-                                JOptionPane.showMessageDialog(null,"库存不足！");
+                                if (isMember==true){
+                                    String[] addData = {cdInfo.getCdbarcode(), cdInfo.getName(), cdInfo.getCategory(), 1 + "", String.valueOf(df.format(cdInfo.getPrice()*0.8)), String.valueOf(df.format(cdInfo.getPrice()*0.8))};//获取文本框中的内容
+                                    tableModel.addRow(addData);//将文本框中的内容添加到表格模型中的末尾一行
+                                }else if (isMember==false) {
+                                    String[] addData = {cdInfo.getCdbarcode(), cdInfo.getName(), cdInfo.getCategory(), 1 + "", String.valueOf(df.format(cdInfo.getPrice()*0.8)), String.valueOf(df.format(cdInfo.getPrice()))};//获取文本框中的内容
+                                    tableModel.addRow(addData);//将文本框中的内容添加到表格模型中的末尾一行
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "库存不足！");
                             }
                         }
                         //int[] num = new int[50];
@@ -266,9 +344,16 @@ public class Sale extends JFrame {
         completeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                settlementFlag=true;
+                for (int i=0;i<saleInfos.size();i++){
+                    SaleJdbc.insert(saleInfos.get(i));
+                    CDJdbc.saleUpdata(saleInfos.get(i).getNumber(),saleInfos.get(i).getCdbarcode());
+                }
+                settlementFlag = true;
                 dataVector.clear();
                 sVector.clear();
+                THIS.dispose();
+                Sale sale = new Sale();
+                sale.setVisible(true);
             }
         });
         panel.add(completeButton);
@@ -280,13 +365,9 @@ public class Sale extends JFrame {
         changeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                table1.setValueAt(cashField.getText(), 0, 3);
-                System.out.println(table1.getValueAt(0, 3));
-                System.out.println(table1.getValueAt(0, 3).toString());
-                System.out.println(Double.valueOf(table1.getValueAt(0, 3).toString()));
+                table1.setValueAt(String.format("%.2f",Double.valueOf(cashField.getText())), 0, 1);
                 change = Double.valueOf(cashField.getText()) - totalPrice;
-                System.out.println(change);
-                table1.setValueAt(String.valueOf(change), 0, 4);
+                table1.setValueAt(String.format("%.2f",change), 0, 2);
             }
         });
         panel.add(changeButton);
@@ -298,32 +379,29 @@ public class Sale extends JFrame {
         settlementButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (name.isEmpty() || phone.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "请填写客户信息");
-                } else if (settlementFlag == false) {
+                if (settlementFlag == false) {
                     JOptionPane.showMessageDialog(null, "您已结算");
 
                 } else if (settlementFlag == true) {
                     int isSettle = JOptionPane.showConfirmDialog(null, "是否确认结算？", "提示", JOptionPane.YES_NO_OPTION);
                     if (isSettle == JOptionPane.YES_OPTION) {
                         settlementFlag = false;
-                        int total = 0;
+                        //int total = 0;
                         for (int i = 0; i < table.getRowCount(); i++) {
-                            total += Integer.parseInt(table.getValueAt(i, 2).toString());
+                            //total += Integer.parseInt(table.getValueAt(i, 2).toString());
                             //SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                             //sd.format(new Date());
                             SimpleDateFormat rd = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
                             Calendar c = Calendar.getInstance();
                             c.add(Calendar.DAY_OF_MONTH, 10);
                             Date rdate = c.getTime();
-                            Vector<SaleInfo> saleInfos = new Vector<>();
                             totalPrice += Double.valueOf(table.getValueAt(i, 5).toString()) * Integer.parseInt(table.getValueAt(i, 3).toString());
-                            saleInfo = new SaleInfo(0, table.getValueAt(i, 0).toString(), name, Integer.parseInt(table.getValueAt(i, 3).toString()), table.getValueAt(i, 2).toString(), Double.valueOf(table.getValueAt(i, 5).toString()), Double.valueOf(table.getValueAt(i, 5).toString()) * Integer.parseInt(table.getValueAt(i, 3).toString()));
+                            saleInfo = new SaleInfo(0, table.getValueAt(i, 0).toString(), table.getValueAt(i, 1).toString(), Integer.parseInt(table.getValueAt(i, 3).toString()), table.getValueAt(i, 2).toString(), Double.valueOf(table.getValueAt(i, 5).toString()), Double.valueOf(table.getValueAt(i, 5).toString()) * Integer.parseInt(table.getValueAt(i, 3).toString()));
                             saleInfos.add(saleInfo);
-
                         }
-
-                        String[] addData = {String.valueOf(totalPrice-deposit),String.valueOf(deposit) , String.valueOf(totalPrice), "",""};
+                        System.out.println("totalPrice:"+totalPrice);
+                        //String.format("%.2f",(totalPrice-deposit))
+                        String[] addData = {String.format("%.2f",totalPrice), "", ""};
                         tableModel1.addRow(addData);//将文本框中的内容添加到表格模型中的末尾一行
                     }
                 }

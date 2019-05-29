@@ -16,7 +16,6 @@ public class CDJdbc {
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
         }
-
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
@@ -82,6 +81,33 @@ public class CDJdbc {
         return true;
     }
 
+    public static boolean saleUpdata(int num, String cdbarcode) {
+        Connection connection = getConn();
+        String sql="update cdinfo set salestock=? where cdbarcode='"+cdbarcode+"';";
+        System.out.println(sql);
+        PreparedStatement preparedStatement;
+        try {
+
+            // 重要的一步
+            preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+            int stock=select_cdbarcode(cdbarcode);
+            System.out.println("stock-num:"+(stock-num));
+            System.out.println("num:"+num);
+
+            preparedStatement.setInt(1,(stock-num));
+            //preparedStatement.setString(2,cdbarcode);
+            preparedStatement.executeUpdate();
+            System.out.println(sql);
+            // 关闭
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     static int select_cdbarcode(String cdbarcode) {
 
         Connection connection = getConn();
@@ -116,7 +142,7 @@ public class CDJdbc {
     /*
      * 这里只返回查询成功与否就可以，顺便改变一下user的win和fail
      * */
-    static boolean select(CDInfo cdInfo) {
+    static boolean select(CDInfo cdInfo,String kind) {
 
         Connection connection = getConn();
         String sql = "select * from cdinfo where cdbarcode= '"+ cdInfo.getCdbarcode() +"';" ;
@@ -138,11 +164,20 @@ public class CDJdbc {
                 cdInfo.setCategory(resultSet.getString(3));
                 cdInfo.setPrice(resultSet.getDouble(4));
 
-                Lease.cdInfo.setName(resultSet.getString(2));
-                Lease.cdInfo.setCategory(resultSet.getString(3));
-                Lease.cdInfo.setPrice(resultSet.getDouble(4));
-                Lease.cdInfo.setSalestock(resultSet.getInt(5));
-                Lease.cdInfo.setLeasestock(resultSet.getInt(6));
+                if (kind.equals("lease")) {
+                    Lease.cdInfo.setName(resultSet.getString(2));
+                    Lease.cdInfo.setCategory(resultSet.getString(3));
+                    Lease.cdInfo.setPrice(resultSet.getDouble(4));
+                    Lease.cdInfo.setSalestock(resultSet.getInt(5));
+                    Lease.cdInfo.setLeasestock(resultSet.getInt(6));
+                }
+                else if (kind.equals("sale")){
+                    Sale.cdInfo.setName(resultSet.getString(2));
+                    Sale.cdInfo.setCategory(resultSet.getString(3));
+                    Sale.cdInfo.setPrice(resultSet.getDouble(4));
+                    Sale.cdInfo.setSalestock(resultSet.getInt(5));
+                    Sale.cdInfo.setLeasestock(resultSet.getInt(6));
+                }
 
                 preparedStatement.close();
                 connection.close();
@@ -166,4 +201,5 @@ public class CDJdbc {
     public static void main(String[] args) {
 
     }
+
 }
