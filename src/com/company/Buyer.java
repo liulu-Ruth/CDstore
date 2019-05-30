@@ -3,6 +3,8 @@ package com.company;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Buyer extends JFrame {
 
@@ -55,7 +57,7 @@ public class Buyer extends JFrame {
 
         Color labColor = new Color(153, 183, 111);
         Font labFont=new Font("幼圆",Font.BOLD,15);
-        JLabel idLabel = new JLabel( Main.user.getName()+"你好，欢迎登录");
+        JLabel idLabel = new JLabel( "你好，欢迎登录");
         idLabel.setFont(labFont);
         idLabel.setBounds(this.getWidth()/2+400, 0, 300, 30);
         idLabel.setBackground(labColor);
@@ -68,18 +70,39 @@ public class Buyer extends JFrame {
         saleButton.setBounds(this.getWidth()/2-100, this.getHeight()/2-50, 200, 30);
         saleButton.setBackground(btnColor);
         saleButton.setFont(btnFont);
+        saleButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                Bsale bsale = new Bsale();
+                bsale.setVisible();
+                THIS.dispose();
+            }
+        });
         panel.add(saleButton);
 
         JButton queryButton = new JButton("销售商品");
         queryButton.setBounds(this.getWidth()/2-100, this.getHeight()/2, 200, 30);
         queryButton.setBackground(btnColor);
         queryButton.setFont(btnFont);
+        queryButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                Bquery bquery = new Bquery();
+                bquery.setVisible();
+                THIS.dispose();
+            }
+        });
         panel.add(queryButton);
 
         JButton returnButton = new JButton("库存查询");
         returnButton.setBounds(this.getWidth()/2-100, this.getHeight()/2+50, 200, 30);
         returnButton.setBackground(btnColor);
         returnButton.setFont(btnFont);
+        returnButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                Breturn breturn = new Breturn();
+                breturn.setVisible();
+                THIS.dispose();
+            }
+        });
         panel.add(returnButton);
 
     }
