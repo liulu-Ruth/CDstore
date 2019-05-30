@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.util.Date;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -220,7 +221,12 @@ public class Lease extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Cashier cashier = new Cashier();
+                Cashier cashier = null;
+                try {
+                    cashier = new Cashier();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
                 cashier.setVisible(true);
                 THIS.dispose();
             }
@@ -308,7 +314,7 @@ public class Lease extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 for (int i=0;i<leaseInfos.size();i++){
                     LeaseJdbc.insert(leaseInfos.get(i));
-                    CDJdbc.leaseUpdata(leaseInfos.get(i).getNumber(),leaseInfos.get(i).getCdbarcode());
+                    CDJdbc.leaseUpdata(leaseInfos.get(i).getNumber(),leaseInfos.get(i).getCdbarcode(),0);
                 }
                 change = 0.00;
                 totalPrice = 0.00;
@@ -382,16 +388,18 @@ public class Lease extends JFrame {
                             System.out.println("Double.parseDouble(table.getValueAt(i, 3).toString()):"+Double.parseDouble(table.getValueAt(i, 3).toString()));
                             System.out.println("Double.parseDouble(table.getValueAt(i, 2).toString():"+Double.parseDouble(table.getValueAt(i, 2).toString()));
                             totalPrice += Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString());
-                            if (i == table.getRowCount() - 1) {
+                            /*if (i == table.getRowCount() - 1) {
                                 System.out.println(table.getValueAt(i, 0).toString());
                                 leaseInfo = new LeaseInfo(0, table.getValueAt(i, 0).toString(), Integer.parseInt(table.getValueAt(i, 2).toString()), name, phone, Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString()), (total + 4) / 5 * 50, nd, rdate);
                                 leaseInfos.add(leaseInfo);
                             } else {
                                 leaseInfo = new LeaseInfo(0, table.getValueAt(i, 0).toString(), Integer.parseInt(table.getValueAt(i, 2).toString()), name, phone, Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString()), 0, nd, rdate);
                                 leaseInfos.add(leaseInfo);
-                            }
+                            }*/
+                            leaseInfo = new LeaseInfo(0, table.getValueAt(i, 0).toString(), Integer.parseInt(table.getValueAt(i, 2).toString()), name, phone, Double.parseDouble(table.getValueAt(i, 3).toString()) * Double.parseDouble(table.getValueAt(i, 2).toString()), 10, nd, rdate);
+                            leaseInfos.add(leaseInfo);
                         }
-                        deposit = (total + 4) / 5 * 50;
+                        deposit = table.getRowCount()*10;
                         totalPrice += deposit;
                         String[] addData = {String.format("%.2f",(totalPrice-deposit)),String.valueOf(deposit) , String.valueOf(totalPrice), "",""};
                         tableModel1.addRow(addData);//将文本框中的内容添加到表格模型中的末尾一行

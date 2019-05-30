@@ -7,12 +7,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Main extends JFrame {
 
     private JPanel contentPane;
     Main mainTHIS;
     public static User user;
+    public static boolean rrFlag = true;
 
     public static void main(String[] args) {
         // write your code here
@@ -174,8 +177,20 @@ public class Main extends JFrame {
                     System.out.println(user.getWorktype());
                     if (user.getWorktype().equals("cashier")) {
                         System.out.println(user.getWorktype());
-                        Cashier cashier = new Cashier();
-                        cashier.setVisible(true);
+                        Cashier cashier = null;
+                        try {
+                            cashier = new Cashier();
+                            cashier.setVisible(true);
+                            LeaseJdbc.updateover();
+                            ResultSet resultSet=LeaseJdbc.selectreturn();
+                            if (resultSet.next()&&rrFlag==true) {
+                                rrFlag=false;
+                                ReturnReminder returnReminder = new ReturnReminder();
+                                returnReminder.setVisible(true);
+                            }
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
                     }else if(user.getWorktype().equals("buyer")){
                         System.out.println(user.getWorktype());
                         Buyer buyer=new Buyer();

@@ -53,8 +53,8 @@ public class CDJdbc {
         return true;
     }
 
-
-    static boolean leaseUpdata(int num,String cdbarcode){
+    static boolean leaseUpdata(int num,String cdbarcode,int flag){
+        //flag=1 add flag=0 reduce
         Connection connection = getConn();
         String sql="update cdinfo set leasestock=? where cdbarcode='"+cdbarcode+"';";
         System.out.println(sql);
@@ -64,10 +64,14 @@ public class CDJdbc {
             // 重要的一步
             preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
             int stock=select_cdbarcode(cdbarcode);
-            System.out.println("stock-num:"+(stock-num));
-            System.out.println("num:"+num);
 
-            preparedStatement.setInt(1,(stock-num));
+            if (flag==0) {
+                preparedStatement.setInt(1, (stock - num));
+            }else if (flag==1){
+                preparedStatement.setInt(1, (stock + num));
+            }else {
+                preparedStatement.setInt(1, (stock ));
+            }
             //preparedStatement.setString(2,cdbarcode);
             preparedStatement.executeUpdate();
             System.out.println(sql);

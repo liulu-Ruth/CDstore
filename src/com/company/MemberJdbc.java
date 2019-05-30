@@ -84,6 +84,7 @@ public class MemberJdbc {
             int col = resultSet.getMetaData().getColumnCount();
             System.out.println(col);
             if (resultSet.next()) {
+                Register.memberInfo.setMembercode(resultSet.getInt(1));
                 preparedStatement.close();
                 connection.close();
                 return true;
