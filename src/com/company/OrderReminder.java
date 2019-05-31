@@ -4,22 +4,20 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class ReturnReminder extends JFrame {
+public class OrderReminder extends JFrame {
     private JPanel contentPane;
-    ReturnReminder THIS;
+    OrderReminder THIS;
 
     public static void main(String[] args) {
         // write your code here
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ReturnReminder returnReminder = new ReturnReminder();
+                    OrderReminder returnReminder = new OrderReminder();
                     returnReminder.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -28,7 +26,8 @@ public class ReturnReminder extends JFrame {
         });
     }
 
-    public ReturnReminder() throws SQLException {
+
+    public OrderReminder() throws SQLException {
         THIS = this;
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -65,25 +64,27 @@ public class ReturnReminder extends JFrame {
 
         Color labColor = new Color(153, 183, 111);
         Font labFont = new Font("幼圆", Font.BOLD, 25);
-        JLabel hintLabel = new JLabel("请提醒以下用户尽快归还商品，否则将收取逾期罚款！");
+        JLabel hintLabel = new JLabel("以下商品库存不足，请尽快采购！");
         hintLabel.setFont(labFont);
-        hintLabel.setBounds(this.getWidth()/2-325, 100, 750, 30);
+        hintLabel.setBounds(this.getWidth()/2-125, 100, 650, 30);
         hintLabel.setBackground(labColor);
         panel.add(hintLabel);
 
+        JLabel hintLabel1 = new JLabel("以下商品库存充裕，请避免采购！");
+        hintLabel1.setFont(labFont);
+        hintLabel1.setBounds(270, 150, 650, 30);
+        hintLabel1.setBackground(labColor);
+        panel1.add(hintLabel1);
 
         Vector<Vector<String>> dataVector = new Vector<Vector<String>>();
         Vector<String> coloumNames = new Vector<String>(1);
 
-        coloumNames.add("序号");
         coloumNames.add("条码");
-        coloumNames.add("姓名");
+        coloumNames.add("名称");
         coloumNames.add("数量");
-        coloumNames.add("手机");
-        coloumNames.add("租金");
-        coloumNames.add("押金");
-        coloumNames.add("租赁日期");
-        coloumNames.add("应还日期");
+        coloumNames.add("价格");
+        coloumNames.add("销售库存");
+        coloumNames.add("租赁库存");
 
         DefaultTableModel tableModel = new DefaultTableModel(dataVector, coloumNames) {
             public boolean isCellEditable(int row, int col) {
@@ -92,27 +93,40 @@ public class ReturnReminder extends JFrame {
         };
         JTable table = new JTable(tableModel);
         JScrollPane jScrollPane = new JScrollPane(table);
-        jScrollPane.setBounds(0, 0, this.getWidth() - 400, this.getHeight() - 300);
+        jScrollPane.setBounds(0, 0, this.getWidth() - 400, 200);
         panel1.add(jScrollPane, BorderLayout.NORTH);
 
-        ResultSet resultSet = LeaseJdbc.selectreturn();
+        ResultSet resultSet = CDJdbc.selectorder(0);
         while (resultSet.next()) {
-            String[] addData = {String.valueOf(resultSet.getInt(1)), resultSet.getString(2), resultSet.getString(4), String.valueOf(resultSet.getInt(3)), resultSet.getString(5), String.format("%.2f", resultSet.getDouble(6)), String.format("%.2f", resultSet.getDouble(7)), String.valueOf(resultSet.getTimestamp(8)), String.valueOf(resultSet.getDate(9))};
+            String[] addData = {String.valueOf(resultSet.getString(1)), resultSet.getString(2), resultSet.getString(3), String.valueOf(resultSet.getDouble(4)), String.valueOf(resultSet.getInt(5)), String.valueOf(resultSet.getInt(6))};
             tableModel.addRow(addData);
         }
 
-        Color btnColor = new Color(153, 183, 111);
-        Font btnFont = new Font("幼圆", Font.BOLD, 15);
-        JButton delButton = new JButton("确认");
-        delButton.setFont(btnFont);
-        delButton.setBackground(btnColor);
-        delButton.setBounds(this.getWidth()/2-100, this.getHeight()-100, 200, 30);
-        delButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                THIS.dispose();
+        Vector<Vector<String>> dataVector1 = new Vector<Vector<String>>();
+        Vector<String> coloumNames1 = new Vector<String>(1);
+
+        coloumNames1.add("条码");
+        coloumNames1.add("名称");
+        coloumNames1.add("数量");
+        coloumNames1.add("价格");
+        coloumNames1.add("销售库存");
+        coloumNames1.add("租赁库存");
+
+        DefaultTableModel tableModel1 = new DefaultTableModel(dataVector1, coloumNames1) {
+            public boolean isCellEditable(int row, int col) {
+                return false;
             }
-        });
-        panel.add(delButton);
+        };
+        JTable table1 = new JTable(tableModel1);
+        JScrollPane jScrollPane1 = new JScrollPane(table1);
+        jScrollPane1.setBounds(0, 200, this.getWidth() - 400, 250);
+        panel1.add(jScrollPane1, BorderLayout.NORTH);
+
+        ResultSet resultSet1 = CDJdbc.selectorder1(1);
+        while (resultSet1.next()) {
+            String[] addData1 = {String.valueOf(resultSet1.getString(1)), resultSet1.getString(2), resultSet1.getString(3), String.valueOf(resultSet1.getDouble(4)), String.valueOf(resultSet1.getInt(5)), String.valueOf(resultSet1.getInt(6))};
+            tableModel1.addRow(addData1);
+        }
+
     }
 }

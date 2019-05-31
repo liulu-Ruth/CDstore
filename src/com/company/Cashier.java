@@ -141,6 +141,20 @@ public class Cashier extends JFrame {
             }
         });
         panel.add(registerButton);
+
+        JButton backButton = new JButton("注销");
+        backButton.setFont(btnFont);
+        backButton.setBackground(btnColor);
+        backButton.setBounds(20, 20, 200, 30);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main main =  new Main();
+                main.setVisible(true);
+                THIS.dispose();
+            }
+        });
+        panel.add(backButton);
     }
 
 }

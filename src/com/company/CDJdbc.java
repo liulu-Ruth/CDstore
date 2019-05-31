@@ -1,6 +1,8 @@
 package com.company;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class CDJdbc {
     static Connection getConn() {
@@ -206,4 +208,100 @@ public class CDJdbc {
 
     }
 
+    public static ResultSet selectstock() {
+        Connection connection = getConn();
+        String sql = "select * from cdinfo ;";
+        PreparedStatement preparedStatement;
+        System.out.println(sql);
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            int col = resultSet.getMetaData().getColumnCount();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public static ResultSet selectbarcode(String barcode) {
+        Connection connection = getConn();
+        String sql = "select * from cdinfo where cdbarcode='"+barcode+"';";
+        PreparedStatement preparedStatement;
+        System.out.println(sql);
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+            //preparedStatement.setString(1,barcode);
+            resultSet = preparedStatement.executeQuery();
+            int col = resultSet.getMetaData().getColumnCount();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public static boolean updata(CDInfo cdInfo) {
+        Connection connection = getConn();
+        String sql="update cdinfo set price=? , salestock=? , leasestock=? where cdbarcode='"+cdInfo.getCdbarcode()+"';";
+        System.out.println(sql);
+        PreparedStatement preparedStatement;
+        try {
+
+            // 重要的一步
+            preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+
+            System.out.println(cdInfo.getPrice()+" "+cdInfo.getSalestock()+" "+cdInfo.getLeasestock());
+            preparedStatement.setDouble(1,cdInfo.getPrice());
+            preparedStatement.setInt(2,cdInfo.getSalestock());
+            preparedStatement.setInt(3,cdInfo.getLeasestock());
+            //preparedStatement.setString(2,cdbarcode);
+            preparedStatement.executeUpdate();
+            System.out.println(sql);
+            // 关闭
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
+
+    public static ResultSet selectorder(int i) {
+        Connection connection = getConn();
+        String sql = "select * from cdinfo where salestock < ?;";
+        PreparedStatement preparedStatement;
+        System.out.println(sql);
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+            preparedStatement.setInt(1,20);
+            resultSet = preparedStatement.executeQuery();
+            int col = resultSet.getMetaData().getColumnCount();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public static ResultSet selectorder1(int i) {
+        Connection connection = getConn();
+        String sql = "select * from cdinfo where salestock > 100 ;";
+        PreparedStatement preparedStatement;
+        System.out.println(sql);
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+            //preparedStatement.setInt(1,100);
+            resultSet = preparedStatement.executeQuery();
+            int col = resultSet.getMetaData().getColumnCount();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
 }

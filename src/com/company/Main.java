@@ -181,7 +181,7 @@ public class Main extends JFrame {
                         try {
                             cashier = new Cashier();
                             cashier.setVisible(true);
-                            LeaseJdbc.updateover();
+                            LeaseJdbc.selectover();
                             ResultSet resultSet=LeaseJdbc.selectreturn();
                             if (resultSet.next()&&rrFlag==true) {
                                 rrFlag=false;
@@ -195,6 +195,12 @@ public class Main extends JFrame {
                         System.out.println(user.getWorktype());
                         Buyer buyer=new Buyer();
                         buyer.setVisible(true);
+                        try {
+                                OrderReminder orderReminder = new OrderReminder();
+                                orderReminder.setVisible(true);
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     mainTHIS.dispose();
                 } else {

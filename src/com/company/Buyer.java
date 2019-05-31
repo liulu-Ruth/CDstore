@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class Buyer extends JFrame {
 
@@ -57,7 +58,7 @@ public class Buyer extends JFrame {
 
         Color labColor = new Color(153, 183, 111);
         Font labFont=new Font("幼圆",Font.BOLD,15);
-        JLabel idLabel = new JLabel( "你好，欢迎登录");
+        JLabel idLabel = new JLabel( Main.user.getName() +"你好，欢迎登录");
         idLabel.setFont(labFont);
         idLabel.setBounds(this.getWidth()/2+400, 0, 300, 30);
         idLabel.setBackground(labColor);
@@ -72,21 +73,26 @@ public class Buyer extends JFrame {
         saleButton.setFont(btnFont);
         saleButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                Bsale bsale = new Bsale();
-                bsale.setVisible();
+                //Bsale bsale = new Bsale();
+                //bsale.setVisible();
                 THIS.dispose();
             }
         });
-        panel.add(saleButton);
+        //panel.add(saleButton);
 
-        JButton queryButton = new JButton("销售商品");
+        JButton queryButton = new JButton("库存查询");
         queryButton.setBounds(this.getWidth()/2-100, this.getHeight()/2, 200, 30);
         queryButton.setBackground(btnColor);
         queryButton.setFont(btnFont);
         queryButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                Bquery bquery = new Bquery();
-                bquery.setVisible();
+                Stock stock = null;
+                try {
+                    stock = new Stock();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                stock.setVisible(true);
                 THIS.dispose();
             }
         });
@@ -98,12 +104,26 @@ public class Buyer extends JFrame {
         returnButton.setFont(btnFont);
         returnButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                Breturn breturn = new Breturn();
+                /*Breturn breturn = new Breturn();
                 breturn.setVisible();
+                THIS.dispose();*/
+            }
+        });
+        //panel.add(returnButton);
+
+        JButton backButton = new JButton("注销");
+        backButton.setFont(btnFont);
+        backButton.setBackground(btnColor);
+        backButton.setBounds(20, 20, 200, 30);
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main main =  new Main();
+                main.setVisible(true);
                 THIS.dispose();
             }
         });
-        panel.add(returnButton);
+        panel.add(backButton);
 
     }
 }
