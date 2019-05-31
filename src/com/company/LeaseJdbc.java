@@ -217,7 +217,7 @@ public class LeaseJdbc {
                 long day=(beginDate.getTime()-endDate.getTime())/(24*60*60*1000);
                 System.out.println("相隔的天数="+day);
                 updateover(deposit[i]+day,rent[i]-day,id[i]);
-                //differentDays(Date.valueOf(date.toString()),Date.valueOf(date1.toString()));
+                differentDays(Date.valueOf(date.toString()),Date.valueOf(date1.toString()));
                 i++;
             }
         } catch (SQLException e) {
@@ -230,7 +230,7 @@ public class LeaseJdbc {
 
     public static boolean updateover(double deposit,double rent,int id) {
         Connection connection = getConn();
-        String sql = "update leaseinfo set deposit = ? and rent = ? where leaseid=?;";
+        String sql = "update leaseinfo set deposit = ? , rent = ? where leaseid=?;";
         PreparedStatement preparedStatement;
         System.out.println(sql);
         ResultSet resultSet = null;
@@ -241,15 +241,15 @@ public class LeaseJdbc {
                 preparedStatement.setInt(3, id);
 
                 //preparedStatement.setDouble(1,);
-            preparedStatement.executeQuery();
-            int col = resultSet.getMetaData().getColumnCount();
+            preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public static int differentDays(Date date1,Date date2)
+    public static int differentDays(java.util.Date date1,java.util.Date date2)
     {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
